@@ -1,5 +1,4 @@
 import streamlit as st
-import tensorflow as tf
 from tensorflow import keras
 from keras import layers, models
 from PIL import Image
@@ -64,5 +63,6 @@ if uploaded_file is not None:
         st.success(" No Fracture Detected.")
     else:
         st.error(" Fracture Detected!")
+
 
 

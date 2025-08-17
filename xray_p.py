@@ -10,7 +10,7 @@ import os
 import gdown
 
 
-weights_path = "Xray_weights.weights.h5"
+weights_path = "bone_fracture.weights.h5"
 file_id = "1qxGz0jKHIVWMAEpef3N3Wfj4lx1KvEdM"
 url = f"https://drive.google.com/uc?id={file_id}"
 
@@ -64,6 +64,7 @@ if uploaded_file is not None:
         st.success(" No Fracture Detected.")
     else:
         st.error(" Fracture Detected!")
+
 
 
 

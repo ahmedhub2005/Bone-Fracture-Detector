@@ -20,6 +20,7 @@ A web-based application for detecting bone fractures from X-ray images using dee
 
 
 📁 Project Structur
+
 Bone-Fracture-Detector/
 ├── app.py                 # Streamlit app
 ├── model/                 # Saved model files
@@ -27,17 +28,22 @@ Bone-Fracture-Detector/
 ├── requirements.txt       # Dependencies
 └── README.md              # Project documentation
 📸 Sample Prediction
+
 Upload an X-ray image and get a prediction like:
 
 🧪 Dataset
+
 Trained on publicly available datasets such as:
 • 	MURA Dataset
 • 	Bone X-ray Fracture Dataset
+
 📌 To-Do
 • 	[ ] Add Grad-CAM visualization
 • 	[ ] Improve model accuracy with more data
 • 	[ ] Deploy to cloud (e.g., Hugging Face Spaces or Azure)
+
 🤝 Contributing
+
 Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
 📜 License
 This project is licensed under the MIT License.

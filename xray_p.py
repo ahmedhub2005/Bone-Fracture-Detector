@@ -12,14 +12,16 @@ file_id = "1qxGz0jKHIVWMAEpef3N3Wfj4lx1KvEdM/view?usp=sharing"
 url = f"https://drive.google.com/uc?id={file_id}"
 
 
-if not os.path.exists(weights_path):
+if not os.path.exists("bone_fracture.weights.h5"):
     with st.spinner("Downloading model weights... (this may take a minute)"):
-        gdown.download(url, weights_path, quiet=False, use_cookies=False)
+        url = "https://drive.google.com/uc?id=1qxGz0jKHIVWMAEpef3N3Wfj4lx1KvEdM"
+        output = "bone_fracture.weights.h5"
+        gdown.download(url, output, quiet=False, use_cookies=False)
 
-
-if not os.path.exists(weights_path):
+if not os.path.exists("bone_fracture.weights.h5"):
     st.error("Model weights could not be downloaded. Please check the URL or file ID.")
     st.stop()
+
 
 
 @st.cache_resource
@@ -67,6 +69,7 @@ if uploaded_file is not None:
         st.success(" No Fracture Detected.")
     else:
         st.error(" Fracture Detected!")
+
 
 
 

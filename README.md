@@ -37,13 +37,7 @@ A web-based application for detecting bone fractures from X-ray images using dee
 - **Output**: Binary classification — Fractured / Not Fractured
 - **Training**: Fine-tuned on curated medical image datasets
 
-## 🛠️ Installation
 
-```bash
-git clone https://github.com/ahmedhub2005/Bone-Fracture-Detector.git
-cd Bone-Fracture-Detector
-pip install -r requirements.txt
-streamlit run app.py
 
 📁 Project Structur
 Bone-Fracture-Detector/

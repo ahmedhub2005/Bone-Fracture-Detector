@@ -7,20 +7,16 @@ from keras import layers, models
 import gdown
 
 
+import requests
+
 weights_path = "bone_fracture.weights.h5"
-file_id = "1qxGz0jKHIVWMAEpef3N3Wfj4lx1KvEdM"
-url = f"https://drive.google.com/uc?id={file_id}"
+url = "https://huggingface.co/sonic222/bone-fracture-detector/resolve/main/bone_fracture.weights.h5"
 
 
-if not os.path.exists("bone_fracture.weights.h5"):
-    with st.spinner("Downloading model weights... (this may take a minute)"):
-        url = "https://drive.google.com/uc?id=1qxGz0jKHIVWMAEpef3N3Wfj4lx1KvEdM"
-        output = "bone_fracture.weights.h5"
-        gdown.download(url, output, quiet=False, use_cookies=False)
 
-if not os.path.exists("bone_fracture.weights.h5"):
-    st.error("Model weights could not be downloaded. Please check the URL or file ID.")
-    st.stop()
+if not os.path.exists(weights_path):
+    with open(weights_path, "wb") as f:
+        f.write(requests.get(url).content)
 
 
 
@@ -69,6 +65,7 @@ if uploaded_file is not None:
         st.success(" No Fracture Detected.")
     else:
         st.error(" Fracture Detected!")
+
 
 
 

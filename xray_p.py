@@ -1,24 +1,22 @@
 import streamlit as st
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import numpy as np
 import os
 from tensorflow import keras
 from keras import layers, models
-import gdown
-
-
 import requests
 
 weights_path = "bone_fracture.weights.h5"
 url = "https://huggingface.co/sonic222/bone-fracture-detector/resolve/main/bone_fracture.weights.h5"
 
 
-
 if not os.path.exists(weights_path):
-    with open(weights_path, "wb") as f:
-        f.write(requests.get(url).content)
-
-
+    try:
+        with open(weights_path, "wb") as f:
+            f.write(requests.get(url).content)
+    except Exception as e:
+        st.error(f"Failed to download model weights: {e}")
+        st.stop()
 
 @st.cache_resource
 def load_model():
@@ -45,26 +43,31 @@ def load_model():
 
 model = load_model()
 
-
-st.title(" Bone Fracture Detector")
+st.title("Bone Fracture Detector")
 st.write("Upload an X-ray image and the model will predict whether a fracture is present.")
 
 uploaded_file = st.file_uploader("Upload an X-ray image:", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    try:
+        image = Image.open(uploaded_file).convert("RGB")
+        st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    img = image.resize((150,150))
-    img_array = np.array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+        img = image.resize((150,150))
+        img_array = np.array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
 
-    prediction = model.predict(img_array)[0][0]
+        prediction = model.predict(img_array)[0][0]
 
-    if prediction > 0.5:
-        st.success(" No Fracture Detected.")
-    else:
-        st.error(" Fracture Detected!")
+        if prediction > 0.5:
+            st.success("No Fracture Detected.")
+        else:
+            st.error("Fracture Detected!")
+    except UnidentifiedImageError:
+        st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+
 
 
 

@@ -51,7 +51,7 @@ uploaded_file = st.file_uploader("Upload an X-ray image:", type=["jpg", "jpeg", 
 if uploaded_file is not None:
     try:
         image = Image.open(uploaded_file).convert("RGB")
-        st.image(image, caption="Uploaded Image", use_container_width=True)
+        st.image(image, caption="Uploaded Image", use_column_width=True)
 
         img = image.resize((150,150))
         img_array = np.array(img) / 255.0
@@ -67,6 +67,7 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
 
 
 

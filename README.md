@@ -1,97 +1,26 @@
-🩻 Bone Fracture Detection using Deep Learning
-<img src="xray_samples.gif" width="500"/>
-📌 Overview
 
-هذا المشروع يهدف إلى بناء نموذج ذكاء اصطناعي باستخدام Convolutional Neural Networks (CNNs) لتصنيف صور الأشعة السينية إلى:
+# 🦴 Bone Fracture Detector
 
-✅ سليم (Normal)
+A web-based application for detecting bone fractures from X-ray images using deep learning. Built with **TensorFlow**, **Keras**, and **Streamlit**, this project aims to provide a fast, accessible diagnostic tool for medical professionals and researchers.
 
-❌ مصاب بكسر (Fracture)
+## 🚀 Features
 
-🎯 الهدف الأساسي هو مساعدة الأطباء في التشخيص بشكل أسرع وأكثر دقة.
+- Upload X-ray images and receive instant fracture predictions
+- Deep learning model trained on labeled fracture datasets
+- Streamlit-powered UI for seamless interaction
+- Real-time visualization of prediction confidence
 
-📂 Dataset
+## 🧠 Model Architecture
 
-تم استخدام صور للأشعة السينية مقسمة إلى:
+- **Base Model**: Pretrained CNN (e.g., ResNet50 or MobileNetV2)
+- **Input**: X-ray image (JPG/PNG)
+- **Output**: Binary classification — Fractured / Not Fractured
+- **Training**: Fine-tuned on curated medical image datasets
 
-Train
+## 🛠️ Installation
 
-Validation
-
-Test
-
-كل صورة مصنفة إما Fracture أو Normal.
-
-🛠️ Tech Stack
-
-Python 🐍
-
-TensorFlow / Keras 🤖
-
-NumPy & Pandas 📊
-
-Matplotlib & Seaborn 📈
-
-Scikit-learn
-
-🚀 Model Architecture
-
-الموديل مبني باستخدام CNN كالتالي:
-
-Conv2D + MaxPooling
-
-BatchNormalization
-
-Dropout (لتقليل الـ Overfitting)
-
-Dense Layers
-
-Output Layer (Sigmoid للتصنيف الثنائي)
-
-📊 Results
-
-Training Accuracy: ~XX%
-
-Validation Accuracy: ~XX%
-
-Test Accuracy: ~XX%
-
-📈 تم استخدام:
-
-Confusion Matrix
-
-Classification Report
-
-ROC Curve + AUC
-
-🖼️ Sample Predictions
-Input Image	Prediction	Result
-X-ray #1	Fracture	❌
-X-ray #2	Normal	✅
-📦 Installation
-git clone https://github.com/your-username/bone-fracture-detection.git
-cd bone-fracture-detection
+```bash
+git clone https://github.com/ahmedhub2005/Bone-Fracture-Detector.git
+cd Bone-Fracture-Detector
 pip install -r requirements.txt
-
-▶️ Usage
-python train.py
-python evaluate.py
-
-
-لو عايز تعمل اختبار على صورة معينة:
-
-python predict.py --image test_sample.jpg
-
-🔮 Future Improvements
-
-استخدام Transfer Learning (ResNet, EfficientNet).
-
-تحسين Augmentation للصور.
-
-بناء واجهة باستخدام Streamlit لتجربة النموذج بشكل مباشر.
-
-🙌 Acknowledgements
-
-Dataset from [link/source].
-
-Inspired by Medical AI research projects
+streamlit run app.py

@@ -3,8 +3,8 @@ from PIL import Image, UnidentifiedImageError
 import numpy as np
 import os
 from tensorflow import keras
-from keras import layers
 from keras.models import load_model as keras_load_model
+from keras import layers
 import requests
 import cv2
 import tensorflow as tf
@@ -47,10 +47,10 @@ model = load_model()
 # 3. Grad-CAM Function
 # ==========================
 def make_gradcam_heatmap(img_array, model):
-    # استدعاء الموديل مرة واحدة لتكوين الطبقات
+  
     _ = model(img_array)
 
-    # اختر آخر Conv2D layer تلقائيًا
+  
     last_conv_layer_name = [layer.name for layer in model.layers if isinstance(layer, layers.Conv2D)][-1]
 
     grad_model = keras.models.Model(
@@ -93,7 +93,7 @@ st.title("🦴 Bone Fracture Detector")
 st.write("Upload an X-ray image and the model will predict whether a fracture is present.")
 
 with st.sidebar:
-    st.header("Preprocessing Options")
+    st.header("Options")
     show_gradcam = st.checkbox("Show Grad-CAM Heatmap", value=True)
 
 uploaded_file = st.file_uploader("Upload an X-ray image:", type=["jpg","jpeg","png"])
@@ -123,6 +123,7 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
 
 
 

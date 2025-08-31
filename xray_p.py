@@ -3,11 +3,10 @@ from PIL import Image, UnidentifiedImageError
 import numpy as np
 import os
 from tensorflow import keras
-from keras import layers, models
+from keras import layers
 from keras.models import load_model as keras_load_model
 import requests
 import cv2
-import matplotlib.pyplot as plt
 import tensorflow as tf
 
 st.set_page_config(page_title="Bone Fracture Detector", layout="centered")
@@ -48,9 +47,10 @@ model = load_model()
 # 3. Grad-CAM Function
 # ==========================
 def make_gradcam_heatmap(img_array, model):
-  
-    _ = model(img_array)  
+    # استدعاء الموديل مرة واحدة لتكوين الطبقات
+    _ = model(img_array)
 
+    # اختر آخر Conv2D layer تلقائيًا
     last_conv_layer_name = [layer.name for layer in model.layers if isinstance(layer, layers.Conv2D)][-1]
 
     grad_model = keras.models.Model(
@@ -60,6 +60,7 @@ def make_gradcam_heatmap(img_array, model):
     with tf.GradientTape() as tape:
         conv_outputs, predictions = grad_model(img_array)
         loss = predictions[:, 0]
+
     grads = tape.gradient(loss, conv_outputs)
     pooled_grads = tf.reduce_mean(grads, axis=(0,1,2))
     conv_outputs = conv_outputs[0]
@@ -67,7 +68,6 @@ def make_gradcam_heatmap(img_array, model):
     heatmap = tf.squeeze(heatmap)
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     return heatmap.numpy()
-
 
 def display_gradcam(image, heatmap):
     heatmap = cv2.resize(heatmap, (image.width, image.height))
@@ -107,6 +107,7 @@ if uploaded_file is not None:
             pred, img_array = predict_image(image)
             confidence = pred if pred > 0.5 else 1 - pred
             confidence_percent = round(confidence*100,2)
+
             if pred > 0.5:
                 st.success(f"No Fracture Detected ✅\nConfidence: {confidence_percent}%")
             else:
@@ -122,6 +123,8 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
+
 
 
 

@@ -47,10 +47,11 @@ model = load_model()
 # 3. Grad-CAM Function
 # ==========================
 def make_gradcam_heatmap(img_array, model):
-  
-    _ = model(img_array)
+    # Ensure model is built
+    if not model.built:
+        model.build(img_array.shape)
 
-  
+    # Get last conv layer
     last_conv_layer_name = [layer.name for layer in model.layers if isinstance(layer, layers.Conv2D)][-1]
 
     grad_model = keras.models.Model(
@@ -62,12 +63,14 @@ def make_gradcam_heatmap(img_array, model):
         loss = predictions[:, 0]
 
     grads = tape.gradient(loss, conv_outputs)
-    pooled_grads = tf.reduce_mean(grads, axis=(0,1,2))
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
     conv_outputs = conv_outputs[0]
     heatmap = conv_outputs @ pooled_grads[..., tf.newaxis]
     heatmap = tf.squeeze(heatmap)
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     return heatmap.numpy()
+
+
 
 def display_gradcam(image, heatmap):
     heatmap = cv2.resize(heatmap, (image.width, image.height))
@@ -123,6 +126,7 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
 
 
 

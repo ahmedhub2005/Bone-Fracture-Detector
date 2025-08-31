@@ -3,8 +3,8 @@ from PIL import Image, UnidentifiedImageError
 import numpy as np
 import os
 from tensorflow import keras
-from keras.models import load_model as keras_load_model
 from keras import layers
+from keras.models import load_model as keras_load_model
 import requests
 import cv2
 import tensorflow as tf
@@ -44,33 +44,12 @@ def load_model(model_path=model_path):
 model = load_model()
 
 # ==========================
-# 3. Grad-CAM Function
+# 3. Grad-CAM Function (Disabled on Cloud)
 # ==========================
 def make_gradcam_heatmap(img_array, model):
-    # Ensure model is built
-    if not model.built:
-        model.build(img_array.shape)
-
-    # Get last conv layer
-    last_conv_layer_name = [layer.name for layer in model.layers if isinstance(layer, layers.Conv2D)][-1]
-
-    grad_model = keras.models.Model(
-        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
-    )
-
-    with tf.GradientTape() as tape:
-        conv_outputs, predictions = grad_model(img_array)
-        loss = predictions[:, 0]
-
-    grads = tape.gradient(loss, conv_outputs)
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
-    conv_outputs = conv_outputs[0]
-    heatmap = conv_outputs @ pooled_grads[..., tf.newaxis]
-    heatmap = tf.squeeze(heatmap)
-    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
-    return heatmap.numpy()
-
-
+   
+    st.warning("Grad-CAM is disabled on Streamlit Cloud.")
+    return np.zeros((150,150))  # placeholder
 
 def display_gradcam(image, heatmap):
     heatmap = cv2.resize(heatmap, (image.width, image.height))
@@ -97,7 +76,7 @@ st.write("Upload an X-ray image and the model will predict whether a fracture is
 
 with st.sidebar:
     st.header("Options")
-    show_gradcam = st.checkbox("Show Grad-CAM Heatmap", value=True)
+    show_gradcam = st.checkbox("Show Grad-CAM Heatmap (Local Only)", value=False)
 
 uploaded_file = st.file_uploader("Upload an X-ray image:", type=["jpg","jpeg","png"])
 
@@ -116,7 +95,7 @@ if uploaded_file is not None:
             else:
                 st.error(f"Fracture Detected ⚠️\nConfidence: {confidence_percent}%")
 
-            # Grad-CAM
+            # Grad-CAM 
             if show_gradcam:
                 heatmap = make_gradcam_heatmap(img_array, model)
                 overlay = display_gradcam(image, heatmap)
@@ -126,6 +105,9 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
+
+
 
 
 

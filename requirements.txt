@@ -1,5 +1,9 @@
-streamlit==1.37.1
-tensorflow==2.20.0
-gdown==4.7.1
+streamlit
+tensorflow
+keras
+pillow
+numpy
+matplotlib
 opencv-python-headless
-matplotlib.pyplot as plt
+requests
+

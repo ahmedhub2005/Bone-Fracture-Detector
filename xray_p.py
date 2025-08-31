@@ -49,6 +49,7 @@ model = load_model()
 # ==========================
 def make_gradcam_heatmap(img_array, model):
     # اختر آخر Conv2D layer تلقائيًا
+      _ = model(img_array)
     last_conv_layer_name = [layer.name for layer in model.layers if isinstance(layer, layers.Conv2D)][-1]
     
     grad_model = keras.models.Model(
@@ -118,6 +119,7 @@ if uploaded_file is not None:
         st.error("The uploaded file is not a valid image. Please upload a JPG or PNG.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
+
 
 
 
